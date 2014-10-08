@@ -1,0 +1,37 @@
+{
+    "name": "emak/route-locale",
+    "description": "Automatic detection of locales from route query for Zend Framework 2",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "zf2",
+        "i18n",
+        "locale"
+    ],
+    "homepage": "https://github.com/juriansluiman/SlmLocale",
+    "authors": [
+        {
+            "name": "Sven Friedemann",
+            "email": "sven@erstellbar.de",
+            "homepage": "https://github.com/3makkk"
+        }
+    ],
+	"repositories": [
+		{
+			"url": "https://github.com/3makkk/SlmLocale",
+			"type": "git"
+		}
+	],
+    "require": {
+        "php": ">=5.3.3.",
+        "slm/locale": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "EmakLocale": "src/"
+        },
+        "classmap": [
+            "./Module.php"
+        ]
+    }
+}
