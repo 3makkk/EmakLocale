@@ -79,6 +79,7 @@ class RouteStrategy extends AbstractStrategy
         }
 
 
+
         $router = $this->getRouter();
         if ($router instanceof TranslatorAwareInterface) {
             $translator = $this->getTranslator();
@@ -95,24 +96,38 @@ class RouteStrategy extends AbstractStrategy
                 foreach ($event->getSupported() as $supportedLocale) {
                     $router->getTranslator()->setLocale($supportedLocale);
 
-                    if ($matchedRoute = $router->match($request)) {
-                        if ($locale = $matchedRoute->getParam($this->getSegmentName())) {
-                            return $locale;
-                        }
-                    }
+                    return $this->getLocaleFromRoute($event);
                 }
 
             }
         }
 
-        if ($matchedRoute = $router->match($request)) {
+        return $this->getLocaleFromRoute($event);
+
+    }
+
+
+    protected function getLocaleFromRoute(LocaleEvent $event)
+    {
+        $supported = array();
+        if ($lookup = $event->hasSupported()) {
+            $supported = $event->getSupported();
+        }
+
+        if ($matchedRoute = $this->getRouter()->match($event->getRequest())) {
             if ($locale = $matchedRoute->getParam($this->getSegmentName())) {
-                return $locale;
+
+                if (!$lookup) {
+                    return $locale;
+                }
+
+                if (\Locale::lookup($supported, $locale)) {
+                    return \Locale::lookup($supported, $locale);
+                }
             }
         }
 
         return null;
-
     }
 
     /**
